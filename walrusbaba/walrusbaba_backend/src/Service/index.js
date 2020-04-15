@@ -4,7 +4,8 @@ const {
   deleteUserData,
   findUserByOTP,
   addFortuneMessage,
-  getFortuneMessage
+  getFortuneMessage,
+  getFortuneBySequence
 } = require('../Controller');
 
 const { sendOTP } = require('../msg91');
@@ -50,9 +51,20 @@ async function getFortune(req, res) {
   }
 }
 
+async function getFortuneDetail(req, res) {
+  const sequence = req.params.sequence;
+  const fortuneMsg = await getFortuneBySequence(sequence);
+  if (fortuneMsg === null) {
+    res.status(404).send({ message: 'Fortune message not found' });
+  } else {
+    res.status(200).send(fortuneMsg);
+  }
+}
+
 module.exports = {
   OTPMatch: OTPMatch,
   updateUserOTP: updateUserOTP,
   addFortune: addFortune,
-  getFortune: getFortune
+  getFortune: getFortune,
+  getFortuneDetail
 };

@@ -92,11 +92,22 @@ async function getFortuneMessage(id) {
   }
 }
 
+async function getFortuneBySequence(seq) {
+  try {
+    return await fortune.find({
+      sequence: seq
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 module.exports = {
   findUser: findUser,
   addUser: addUser,
   deleteUserData: deleteUserData,
   findUserByOTP: findUserByOTP,
   addFortuneMessage: addFortuneMessage,
-  getFortuneMessage: getFortuneMessage
+  getFortuneMessage: getFortuneMessage,
+  getFortuneBySequence: getFortuneBySequence
 };
