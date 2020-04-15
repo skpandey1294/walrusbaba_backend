@@ -2,8 +2,12 @@ const {
   findUser,
   addUser,
   deleteUserData,
-  findUserByOTP
+  findUserByOTP,
+  addFortuneMessage,
+  getFortuneMessage
 } = require('../Controller');
+
+const { sendOTP } = require('../msg91');
 
 async function OTPMatch(req, res) {
   const otp = req.params.otp;
@@ -17,6 +21,7 @@ async function OTPMatch(req, res) {
 
 async function updateUserOTP(req, res) {
   const userData = req.body;
+  sendOTP(userData);
   const user = await findUser(userData);
   if (user === null) {
     res.status(404).send({ message: 'User Not Registered' });
@@ -25,4 +30,29 @@ async function updateUserOTP(req, res) {
   }
 }
 
-module.exports = { OTPMatch: OTPMatch, updateUserOTP: updateUserOTP };
+async function addFortune(req, res) {
+  const msg = req.body;
+  const fortuneMsg = await addFortuneMessage(msg);
+  if (fortuneMsg === null) {
+    res.status(404).send({ message: 'Fortune Add Failed' });
+  } else {
+    res.status(200).send(fortuneMsg);
+  }
+}
+
+async function getFortune(req, res) {
+  const { id } = req.params;
+  const fortuneMsg = await getFortuneMessage(id);
+  if (fortuneMsg === null) {
+    res.status(404).send({ message: 'Fortune message not found' });
+  } else {
+    res.status(200).send(fortuneMsg);
+  }
+}
+
+module.exports = {
+  OTPMatch: OTPMatch,
+  updateUserOTP: updateUserOTP,
+  addFortune: addFortune,
+  getFortune: getFortune
+};

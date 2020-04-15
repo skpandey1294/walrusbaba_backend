@@ -6,6 +6,8 @@ const router = require('./src/Router/index');
 
 const config = require('./src/config');
 
+const cors = require('cors');
+
 const app = express();
 
 mongoose.connect(config.MONGO_URI, { useNewUrlParser: true }, error => {
@@ -15,6 +17,8 @@ mongoose.connect(config.MONGO_URI, { useNewUrlParser: true }, error => {
     console.error('error connection to database');
   }
 });
+
+app.use(cors());
 
 app.use('/', router);
 

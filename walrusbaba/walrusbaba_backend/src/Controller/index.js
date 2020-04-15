@@ -1,5 +1,7 @@
 const users = require('../Model/User');
 
+const fortune = require('../Model/FortuneMsg');
+
 async function findUser(userData) {
   try {
     return await users.find(
@@ -69,9 +71,32 @@ async function findUserByOTP(otp) {
   }
 }
 
+// Fortune Messages
+
+async function addFortuneMessage(msg) {
+  try {
+    const message = new fortune(msg);
+    return await message.save();
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+async function getFortuneMessage(id) {
+  try {
+    return await fortune.find({
+      _id: id
+    });
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 module.exports = {
   findUser: findUser,
   addUser: addUser,
   deleteUserData: deleteUserData,
-  findUserByOTP: findUserByOTP
+  findUserByOTP: findUserByOTP,
+  addFortuneMessage: addFortuneMessage,
+  getFortuneMessage: getFortuneMessage
 };
